@@ -1,11 +1,16 @@
-console.log('starting')
+const request = require('request')
 
-setTimeout(()=>{
-    console.log('2 sec timer')
-}, 2000)
+ const url = 'https://api.weatherstack.com/current?access_key=a818ae5bf8e13c72847c794148f22f96&query=37.8267,-122.4233&units=f'
 
-setTimeout(()=>{
-    console.log('0 sec timer')
-}, 0)
+ request({url: url, json: true}, (error, response) =>{
+    console.log(response.body.current.weather_descriptions[0] + ". the tempretur is now " + response.body.current.temperature + " but it feels like " + response.body.current.feelslike) 
+ })
+ 
 
-console.log('stopping')
+ const geocodeURL = 'https://api.mapbox.com/geocoding/v5/mapbox.places/Los%20Angeles.json?access_token=pk.eyJ1IjoiYW5kcmV3bWVhZDEiLCJhIjoiY2pvOG8ybW90MDFhazNxcnJ4OTYydzJlOSJ9.njY7HvaalLEVhEOIghPTlw&limit=1'
+
+request({ url: geocodeURL, json: true }, (error, response) => {
+    const latitude = response.body
+    const longitude = response.body
+    console.log(latitude, longitude)
+})
