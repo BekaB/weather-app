@@ -1,26 +1,25 @@
-const request = require('request')
 const geocode = require('./utils/geocode')
 const forecast = require('./utils/forecast')
 
-//  const geocodeURL = 'http://api.ipstack.com/109.177.147.123?access_key=b5991f258c94a2970f197d5c8223222f'
 
-// request({ url: geocodeURL, json: true }, (error, response) => {
-//     if(error){
-//         console.log("unable to connect")
-//     }else if(response.body.latitude){
-//         console.log(response.body.latitude)
-//     }else{
-//     const latitude = response.body
-//     const longitude = response.body
-//     console.log(latitude, longitude)
-// }
-// })
+const address = process.argv[2]
 
-geocode('Boston', (error, data)=>{
-    console.log(data)
-})
+if(!address){
+    console.log('please insert and address')
 
-forecast(37.8267, -122.4233, (error,data) => {
-    //console.log('Error', error)
-    console.log('Data', data)
-})
+}else{
+    geocode(address, (error, {latitude, longitudie, location} = {})=>{
+        //console.log('Error', error)
+        if(error){
+            return console.log('error')
+        }
+        forecast(latitude, longitudie, (error,forecastdata) => {
+            //console.log('Error', error)
+            if(error){
+                console.log(error)
+            }
+            console.log(location)
+            console.log(forecastdata)
+        })
+    })
+}
